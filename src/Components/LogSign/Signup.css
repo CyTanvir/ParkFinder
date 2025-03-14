@@ -1,0 +1,12 @@
+
+
+.google-signin {
+    display: flex;
+    align-items: center;
+}
+
+.google-icon {
+    width: 20px;
+    height: 20px;
+    margin-right: 8px;
+}
