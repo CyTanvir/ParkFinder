@@ -11,6 +11,7 @@ const Login = () => {
     <div className='container'>
       <div className='header'>
         <div className='text'>Welcome Back</div>
+        <div className="underline"></div>
       </div>
       <div className="inputs">
         <div className="input">
@@ -26,7 +27,7 @@ const Login = () => {
         <button className="submit">Sign In</button>
       </div>
       <div className="footer">
-        <p>Don't have an account? <Link to="/">Sign Up</Link></p> {}
+        <p>Don't have an account? <Link className='signIN' to="/">Sign up</Link></p> {}
         <p>OR</p>
         <button className="google-signin">
           <img className='google-icon' src={google_icon} alt="" />
