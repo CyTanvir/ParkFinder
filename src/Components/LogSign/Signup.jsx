@@ -29,10 +29,10 @@ const Signup = () => {
         </div>
       </div>
       <div className="submit-container">
-        <button className="submit">Sign In</button>
+        <button className="submit">Sign Up</button>
       </div>
       <div className="footer">
-        <p>Already have an account?<Link to="/Login" className="signIN">Log In</Link></p>
+        <p>Already have an account? <Link to="/Login" className="signIN">Log In</Link></p>
         <p>OR</p>
         <button className="google-signin">
           <img className='google-icon' src={google_icon} alt="" />
