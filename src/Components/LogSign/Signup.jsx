@@ -32,7 +32,7 @@ const Signup = () => {
         <button className="submit">Sign Up</button>
       </div>
       <div className="footer">
-        <p>Already have an account? <Link to="/Login" className="signIN">Log In</Link></p>
+        <p>Already have an account? <Link to="/" className="signIN">Log In</Link></p>
         <Link to="/home" className="signIN">Home</Link> 
         <p>OR</p>
         <button className="google-signin">
