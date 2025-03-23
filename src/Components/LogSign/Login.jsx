@@ -28,7 +28,7 @@ const Login = () => {
         <button className="submit">Sign In</button>
       </div>
       <div className="footer">
-        <p>Don't have an account? <Link className='signIN' to="/">Sign up</Link></p> {}
+        <p>Don't have an account? <Link className='signIN' to="/SignIn">Sign up</Link></p> {}
         <p>OR</p>
         <button className="google-signin">
           <img className='google-icon' src={google_icon} alt="" />
