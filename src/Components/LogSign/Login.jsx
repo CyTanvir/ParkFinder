@@ -7,6 +7,7 @@ import pass_icon from '../Assets/pass.png';
 import google_icon from '../Assets/google.png';
 
 const Login = () => {
+  
   return (
     <div className='container'>
       <div className='header'>
