@@ -33,7 +33,6 @@ const Signup = () => {
       </div>
       <div className="footer">
         <p>Already have an account? <Link to="/" className="signIN">Log In</Link></p>
-        <Link to="/home" className="signIN">Home</Link> 
         <p>OR</p>
         <button className="google-signin">
           <img className='google-icon' src={google_icon} alt="" />
