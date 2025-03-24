@@ -1,15 +1,13 @@
 body {
-    background: linear-gradient(135deg, #131616, #190341); /* Adjust these colors as you like */
+    background: linear-gradient(135deg, #131616, #190341);
     height: 100vh;
 }
 .container {
     display: flex;
     flex-direction: column;
-    margin: auto;
-    margin-top: 200px;
     width: 600px;
     background: white;
-    padding-bottom: 30px;
+    padding-bottom: 50px;
     border-radius: 15px;
 }
 

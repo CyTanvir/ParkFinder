@@ -9,7 +9,7 @@ import google_icon from '../Assets/google.png'
 
 const Signup = () => {
   return (
-    <div className='container'>
+    <div className='container'>s
       <div className='header'>
         <div className='text'>Welcome</div>
         <div className="underline"></div>
@@ -40,6 +40,7 @@ const Signup = () => {
         </button>
       </div>
     </div>
+
   );
 }
 
