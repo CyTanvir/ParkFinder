@@ -1,4 +1,7 @@
-
+body {
+    background: linear-gradient(135deg, #131616, #190341); /* Adjust these colors as you like */
+    height: 100vh;
+}
 .container {
     display: flex;
     flex-direction: column;

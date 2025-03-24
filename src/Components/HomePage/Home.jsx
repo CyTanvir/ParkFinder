@@ -1,21 +1,6 @@
 import React from "react";
-import { Link } from "react-router-dom";
 import "./Home.css";
 
-const Navbar = () => {
-  return (
-    <nav id="navigation">
-      <div className="Logo">Park Finder</div>
-      <ul>
-        <li><Link to="/mostvisited">Hot Spot</Link></li>
-        <li><Link to="/hotspot">Most Visited</Link></li>
-        <li><Link to="/contactus">Contact Us</Link></li>
-        <li><Link to="/about">About</Link></li>
-        <li><Link to="/account">Your Account</Link></li>
-      </ul>
-    </nav>
-  );
-};
 
 const Home = () => {
   return (
@@ -33,7 +18,6 @@ const Home = () => {
 const Main = () => {
   return (
     <div>
-      <Navbar />
       <Home />
     </div>
   );
