@@ -25,7 +25,7 @@ const Login = () => {
         </div>
       </div>
       <div className="submit-container">
-        <button className="submit">Sign In</button>
+        <button className="submit" >Sign In</button>
       </div>
       <div className="footer">
         <p>Don't have an account? <Link className='signIN' to="/SignIn">Sign up</Link></p> {}
