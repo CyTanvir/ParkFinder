@@ -9,7 +9,7 @@ import google_icon from '../Assets/google.png'
 
 const Signup = () => {
   return (
-    <div className='container'>s
+    <div className='container'>
       <div className='header'>
         <div className='text'>Welcome</div>
         <div className="underline"></div>
