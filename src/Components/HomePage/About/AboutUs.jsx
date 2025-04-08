@@ -1,8 +1,8 @@
 import React from 'react';
 import './AboutUs.css';
-import missionImage from '../../Assets/mission2.jpg';
-import visionImg from '../../Assets/vision.jpg';
-import chooseImg from '../../Assets/choose.jpg';
+import missionImage from '../../Assets/missionPic1.jpg';
+import visionImg from '../../Assets/visionPic1.jpg';
+import chooseImg from '../../Assets/whyusPic1.jpg';
 import teamImg from '../../Assets/team.png'
 
 const AboutUs = () => {
