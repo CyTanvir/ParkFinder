@@ -24,7 +24,7 @@ export default function ParkFinder() {
   useEffect(() => {
     const initializeMap = async () => {
       const loader = new Loader({
-        apiKey: 'AIzaSyDhOLak4PYsFwBjOrRbVBtywAoCu3FShrs',
+        apiKey: process.env.REACT_APP_GOOGLE_MAPS_API_KEY,
         version: 'weekly',
         libraries: ['places']
       });
