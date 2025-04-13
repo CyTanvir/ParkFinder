@@ -11,8 +11,8 @@ const Navbar = () => {
                 <Link to="/Home">ParkFinder</Link>
             </div>
             <ul>
-                <li><Link to="/mostvisited">Hot Spot</Link></li>
-                <li><Link to="/hotspot">Most Visited</Link></li>
+                <li><Link to="/hotspot">Hot Spot</Link></li>
+                <li><Link to="/mostvisited">Most Visited</Link></li>
                 <li><Link to="/contact">Contact Us</Link></li>
                 <li><Link to="/about">About</Link></li>
                 <li><Link to="/account">Your Account</Link></li>
