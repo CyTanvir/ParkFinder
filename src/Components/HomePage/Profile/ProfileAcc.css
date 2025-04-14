@@ -1,0 +1,57 @@
+.account-actions {
+    max-width: 500px;
+    margin: 2rem auto;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 1.2rem;
+    font-family: sans-serif;
+  }
+  
+  .profile-pic-wrapper {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+  
+  .profile-pic {
+    width: 100px;
+    height: 100px;
+    border-radius: 50%;
+    object-fit: cover;
+    border: 3px solid #ddd;
+  }
+  
+  .action-box {
+    width: 100%;
+    background-color: #ffffff;
+    padding: 1rem;
+    border-radius: 12px;
+    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
+    text-align: left;
+  }
+  
+  .mini-btn {
+    margin-top: 0.5rem;
+    padding: 0.4rem 0.8rem;
+    border: none;
+    background-color: #007bff;
+    color: white;
+    border-radius: 8px;
+    cursor: pointer;
+  }
+  
+  .clickable {
+    cursor: pointer;
+    transition: background 0.2s;
+  }
+  
+  .clickable:hover {
+    background-color: #f0f0f0;
+  }
+  
+  .delete {
+    background-color: #ffe5e5;
+    color: #b00020;
+  }
+  
