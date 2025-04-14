@@ -7,6 +7,7 @@ import ContactUs from './Components/HomePage/Contact/ContactUs';
 import Nav from './Components/Nav/Navbar';
 import AboutUs from './Components/HomePage/About/AboutUs';
 import HotSpot from './Components/HomePage/HotS/HotSpot';
+import ProfileAcc from './Components/HomePage/Profile/ProfileAcc'
 
 const App = () => {
   return (
@@ -19,6 +20,7 @@ const App = () => {
         <Route path="/contact" element={<ContactUs />} />
         <Route path="/about" element={<AboutUs/>} />
         <Route path="/hotspot" element={<HotSpot/>} />
+        <Route path="/account" element={<ProfileAcc/>} />
       </Routes>
     </Router>
   );
