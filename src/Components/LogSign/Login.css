@@ -70,6 +70,7 @@
     display: flex;
     margin: 40px auto;
     height: 50px;
+    justify-content: center;
 }
 .submit {
     display: flex;
@@ -83,9 +84,10 @@
     font-weight: 700;
     cursor: pointer;
 }
+  
 
 .submit:hover {
-    color: #ffffff4f;
+    color: #b892e32e;
 }
 
 .footer {

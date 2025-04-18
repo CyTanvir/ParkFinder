@@ -1,57 +1,128 @@
-.account-actions {
-    max-width: 500px;
-    margin: 2rem auto;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    gap: 1.2rem;
-    font-family: sans-serif;
-  }
-  
-  .profile-pic-wrapper {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-  }
-  
-  .profile-pic {
-    width: 100px;
-    height: 100px;
-    border-radius: 50%;
-    object-fit: cover;
-    border: 3px solid #ddd;
-  }
-  
-  .action-box {
-    width: 100%;
-    background-color: #ffffff;
-    padding: 1rem;
-    border-radius: 12px;
-    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
-    text-align: left;
-  }
-  
-  .mini-btn {
-    margin-top: 0.5rem;
-    padding: 0.4rem 0.8rem;
-    border: none;
-    background-color: #007bff;
-    color: white;
-    border-radius: 8px;
-    cursor: pointer;
-  }
-  
-  .clickable {
-    cursor: pointer;
-    transition: background 0.2s;
-  }
-  
-  .clickable:hover {
-    background-color: #f0f0f0;
-  }
-  
-  .delete {
-    background-color: #ffe5e5;
-    color: #b00020;
-  }
-  
+.profile-page {
+  background-color: #f4f4f4;
+  min-height: 100vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+}
+
+.profile-card {
+  background-color: #fff;
+  padding: 2.5rem;
+  border-radius: 16px;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+  width: 100%;
+  max-width: 550px;
+  text-align: center;
+}
+
+.profile-main-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 1.5rem;
+  margin-top: 1.2rem;
+  flex-wrap: wrap;
+}
+
+.profile-info {
+  text-align: left;
+  font-size: 1rem;
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 0.8rem;
+}
+
+.profile-row {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  flex-wrap: wrap;
+}
+
+.label {
+  width: 120px;
+  font-weight: bold;
+  color: #333;
+}
+
+.value {
+  color: #555;
+  word-break: break-word;
+}
+
+.profile-avatar {
+  width: 100px;
+  height: 100px;
+  object-fit: cover;
+  border-radius: 50%;
+  border: 3px solid #8C52FF;
+}
+
+.profile-title {
+  font-size: 1.8rem;
+  font-weight: bold;
+  margin-bottom: 1rem;
+  color: #222;
+}
+
+.reviews-note {
+  margin-top: 1rem;
+  font-size: 0.9rem;
+  color: #666;
+}
+.reviews-note strong {
+  display: block;
+  margin-bottom: 0.2rem;
+  color: #333;
+}
+.reviews-note span {
+  font-size: 0.8rem;
+  color: #888;
+}
+
+.profile-actions {
+  margin-top: 2rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+}
+
+.btn {
+  padding: 0.7rem 1rem;
+  border: none;
+  border-radius: 8px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.btn-green {
+  background-color: #26e25b;
+  color: white;
+}
+
+.btn-green:hover {
+  background-color: #13744a;
+}
+
+.btn-red {
+  background-color: #ff4d4f;
+  color: white;
+}
+
+.btn-red:hover {
+  background-color: #d9363e;
+}
+
+.btn-outline {
+  background-color: white;
+  border: 2px solid #2fd185;
+  color: #2fd95a;
+}
+
+.btn-outline:hover {
+  background-color: #f3edff;
+}

@@ -31,7 +31,7 @@ export default function ParkFinder() {
       
       try {
         const google = await loader.load();
-        const defaultLocation = { lat: 40.7128, lng: -74.0060 }; // New York
+        const defaultLocation = { lat: 42.3297, lng: -83.0425 }; // Michigan
         
         const mapInstance = new google.maps.Map(mapRef.current, {
           center: defaultLocation,

@@ -1,43 +1,66 @@
 import React from 'react';
+import { Navigate } from 'react-router-dom';
+import { useAuth } from '../../../contexts/authContext/authContext';
 import './ProfileAcc.css';
+import teamImg from '../../Assets/team.png'
 
-const AccountActions = () => {
+const ProfileAcc = () => {
+  const { currentUser, logout } = useAuth();
+
+  if (!currentUser) {
+    return <Navigate to="/" replace />;
+  }
+
+  const handleLogout = async () => {
+    try {
+      await logout();
+    } catch (error) {
+      console.error("Failed to log out:", error);
+    }
+  };
+
   return (
-    <div className="account-actions">
-      {/* Profile Picture */}
-      <div className="profile-pic-wrapper">
-        <img
-          src="https://via.placeholder.com/100"
-          alt="Profile"
-          className="profile-pic"
-        />
-      </div>
+    <div className="profile-page">
+      <div className="profile-card">
+        <h2 className="profile-title">Welcome to ParkFinder</h2>
 
-      {/* Name and Email */}
-      <div className="action-box">
-        <p><strong>First Name:</strong> John</p>
-        <p><strong>Last Name:</strong> Doe</p>
-        <p><strong>Email:</strong> john@example.com</p>
-        <button className="mini-btn">Change Password</button>
-      </div>
+        <div className="profile-main-row">
+          <div className="profile-info">
+            <div className="profile-row">
+              <span className="label">Email:</span>
+              <span className="value">{currentUser.email}</span>
+            </div>
+            <div className="profile-row">
+              <span className="label">Name:</span>
+              <span className="value">{currentUser.displayName || "Not Set"}</span>
+            </div>
+            <div className="profile-row">
+              <span className="label">Parks Visited:</span>
+              <span className="value">N/A</span>
+            </div>
+          </div>
 
-      {/* Parks Visited */}
-      <div className="action-box">
-        <p><strong>Parks Visited:</strong> 14</p>
-      </div>
 
-      {/* Check Your Reviews */}
-      <div className="action-box clickable">
-        <p><strong>Check Your Reviews</strong></p>
-        <p style={{ fontSize: '0.9rem', color: '#666' }}>Tap to view and edit reviews</p>
-      </div>
+          <img
+            src={teamImg}
+            alt="Profile"
+            className="profile-avatar"
+          />
+        </div>
 
-      {/* Delete Account */}
-      <div className="action-box delete clickable">
-        <strong>Delete My Account</strong>
+        <div className="reviews-note">
+          <strong>Check Your Reviews</strong>
+          <span>Tap to view and edit reviews</span>
+        </div>
+
+        <div className="profile-actions">
+          <button className="btn btn-green" onClick={() => alert("Change Password TBD")}>Change Password</button>
+          <button className="btn btn-red" onClick={() => alert("Delete Account TBD")}>Delete My Account</button>
+          <button className="btn btn-outline" onClick={handleLogout}>Log Out</button>
+        </div>
       </div>
     </div>
   );
 };
 
-export default AccountActions;
+export default ProfileAcc;
