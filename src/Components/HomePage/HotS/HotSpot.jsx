@@ -2,9 +2,7 @@ import React, { useState, useEffect, useRef } from 'react';
 import { Loader } from '@googlemaps/js-api-loader';
 import './HotSpot.css';
 
-// Main ParkFinder component
 export default function ParkFinder() {
-  // State variables
   const [map, setMap] = useState(null);
   const [userLocation, setUserLocation] = useState(null);
   const [parkMarkers, setParkMarkers] = useState([]);
@@ -14,13 +12,11 @@ export default function ParkFinder() {
   const [parksList, setParksList] = useState([]);
   const [searchMessage, setSearchMessage] = useState('Enter a location to find parks nearby.');
   
-  // Refs
   const mapRef = useRef(null);
   const locationInputRef = useRef(null);
   const autocompleteRef = useRef(null);
   const currentInfoWindowRef = useRef(null);
   
-  // Initialize map
   useEffect(() => {
     const initializeMap = async () => {
       const loader = new Loader({
@@ -31,7 +27,7 @@ export default function ParkFinder() {
       
       try {
         const google = await loader.load();
-        const defaultLocation = { lat: 42.3297, lng: -83.0425 }; // Michigan
+        const defaultLocation = { lat: 42.3297, lng: -83.0425 };
         
         const mapInstance = new google.maps.Map(mapRef.current, {
           center: defaultLocation,
@@ -45,7 +41,7 @@ export default function ParkFinder() {
         setMap(mapInstance);
         setIsLoading(false);
         
-        // Initialize autocomplete
+       
         if (locationInputRef.current && google.maps.places) {
           autocompleteRef.current = new google.maps.places.Autocomplete(locationInputRef.current, {
             types: ['geocode']
@@ -60,7 +56,6 @@ export default function ParkFinder() {
     
     initializeMap();
     
-    // Cleanup
     return () => {
       if (currentInfoWindowRef.current) {
         currentInfoWindowRef.current.close();
@@ -69,13 +64,14 @@ export default function ParkFinder() {
     };
   }, []);
   
-  // Clear park markers
   const clearParkMarkers = () => {
     parkMarkers.forEach(marker => {
-      if (marker.map) {
-        marker.map = null;
-      } else {
-        marker.setMap(null);
+      if (marker) {
+        if (marker.map) {
+          marker.map = null;
+        } else if (marker.setMap) {
+          marker.setMap(null);
+        }
       }
     });
     
@@ -87,15 +83,15 @@ export default function ParkFinder() {
     }
   };
   
-  // Handle finding parks from user input
+  
   const findParksFromUserInput = async () => {
-    // Clear existing markers
+    
     clearParkMarkers();
     
-    // Update search message
+    
     setSearchMessage("Finding location...");
     
-    // Get user input
+   
     const locationInput = locationInputRef.current.value.trim();
     
     if (!locationInput) {
@@ -105,7 +101,7 @@ export default function ParkFinder() {
     }
     
     try {
-      // Use Geocoding API
+      
       const geocoder = new window.google.maps.Geocoder();
       const result = await new Promise((resolve, reject) => {
         geocoder.geocode({ address: locationInput }, (results, status) => {
@@ -117,7 +113,7 @@ export default function ParkFinder() {
         });
       });
       
-      // Get coordinates
+      
       const location = {
         lat: result.geometry.location.lat(),
         lng: result.geometry.location.lng()
@@ -126,13 +122,13 @@ export default function ParkFinder() {
       setUserLocation(location);
       setLocationError('');
       
-      // Update user marker
+    
       updateUserLocationMarker(location);
       
-      // Center map
+     
       map.setCenter(location);
       
-      // Find parks
+    
       findParksNearLocation(location);
       
     } catch (error) {
@@ -142,32 +138,38 @@ export default function ParkFinder() {
     }
   };
   
-  // Use default location
+ 
   const useDefaultLocation = () => {
-    const defaultLocation = { lat: 40.7128, lng: -74.0060 }; // New York
+    const defaultLocation = { lat: 40.7128, lng: -74.0060 };
     setLocationError('');
     setUserLocation(defaultLocation);
     
-    // Update user marker
+   
     updateUserLocationMarker(defaultLocation);
     
-    // Center map
+    
     map.setCenter(defaultLocation);
     
-    // Find parks
+    
     findParksNearLocation(defaultLocation);
   };
   
-  // Update user location marker
+  
   const updateUserLocationMarker = (location) => {
-    // Remove existing marker
+    if (!window.google || !map) return;
+    
+    
     if (userMarker) {
-      userMarker.map = null;
+      if (userMarker.map) {
+        userMarker.map = null;
+      } else if (userMarker.setMap) {
+        userMarker.setMap(null);
+      }
     }
     
     let newMarker;
-    // Use AdvancedMarkerElement if available
-    if (window.google.maps.marker) {
+  
+    if (window.google.maps.marker && window.google.maps.marker.AdvancedMarkerElement) {
       const pinElement = document.createElement("div");
       pinElement.innerHTML = `
         <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="24" height="24">
@@ -182,7 +184,7 @@ export default function ParkFinder() {
         content: pinElement
       });
     } else {
-      // Fallback to regular marker
+      
       newMarker = new window.google.maps.Marker({
         map: map,
         position: location,
@@ -201,59 +203,80 @@ export default function ParkFinder() {
     setUserMarker(newMarker);
   };
   
-  // Find parks near location
-  const findParksNearLocation = (location) => {
-    // Get radius
-    const radius = parseInt(document.getElementById("radius-select").value);
-    
-    // Update search message
-    setSearchMessage("Searching for parks...");
-    
-    try {
-      // Create Places Service
-      const service = new window.google.maps.places.PlacesService(map);
-      
-      // Define request
-      const request = {
-        location: location,
-        radius: radius,
-        keyword: 'park',
-        type: ['park']
-      };
-      
-      // Nearby search
-      service.nearbySearch(request, (results, status) => {
-        if (status === window.google.maps.places.PlacesServiceStatus.OK && results) {
-          if (results.length > 0) {
-            displayParks(results, location);
-          } else {
-            setSearchMessage("No parks found within the selected radius.");
-          }
-        } else {
-          // Handle errors
-          console.error("Places API error:", status);
-          let errorMsg = "Error searching for parks.";
-          
-          if (status === window.google.maps.places.PlacesServiceStatus.ZERO_RESULTS) {
-            errorMsg = "No parks found in this area.";
-          } else if (status === window.google.maps.places.PlacesServiceStatus.OVER_QUERY_LIMIT) {
-            errorMsg = "API quota exceeded. Please try again later.";
-          } else if (status === window.google.maps.places.PlacesServiceStatus.REQUEST_DENIED) {
-            errorMsg = "API request denied. Check your API key configuration.";
-          }
-          
-          setSearchMessage(errorMsg);
-        }
-      });
-    } catch (error) {
-      console.error("Error finding parks:", error);
-      setSearchMessage("An error occurred while searching for parks. Please try again later.");
-    }
-  };
+ 
+// Find parks near location
+const findParksNearLocation = (location) => {
+  if (!window.google || !map) {
+    console.error("Google Maps not fully loaded");
+    setSearchMessage("Map services not fully loaded. Please refresh the page.");
+    return;
+  }
   
-  // Display parks
+  // Check if Places API is available
+  if (!window.google.maps.places) {
+    console.error("Google Maps Places library not loaded");
+    setSearchMessage("Places API not loaded. Make sure your API key has Places API enabled.");
+    return;
+  }
+  
+  // Get radius
+  const radius = parseInt(document.getElementById("radius-select").value);
+  
+  // Update search message
+  setSearchMessage("Searching for parks...");
+  
+  try {
+    // Create Places Service
+    const service = new window.google.maps.places.PlacesService(map);
+    
+    // Define request
+    const request = {
+      location: location,
+      radius: radius,
+      keyword: 'park',
+      type: 'park'  // Changed from ['park'] to 'park'
+    };
+    
+    console.log("Places API request:", request); // Debug log
+    
+    // Nearby search
+    service.nearbySearch(request, (results, status) => {
+      console.log("Places API response status:", status); // Debug log
+      
+      if (status === window.google.maps.places.PlacesServiceStatus.OK && results) {
+        console.log("Found parks:", results.length); // Debug log
+        if (results.length > 0) {
+          displayParks(results, location);
+        } else {
+          setSearchMessage("No parks found within the selected radius.");
+        }
+      } else {
+        // Handle errors
+        console.error("Places API error:", status);
+        let errorMsg = "Error searching for parks.";
+        
+        if (status === window.google.maps.places.PlacesServiceStatus.ZERO_RESULTS) {
+          errorMsg = "No parks found in this area.";
+        } else if (status === window.google.maps.places.PlacesServiceStatus.OVER_QUERY_LIMIT) {
+          errorMsg = "API quota exceeded. Please try again later.";
+        } else if (status === window.google.maps.places.PlacesServiceStatus.REQUEST_DENIED) {
+          errorMsg = "API request denied. Check your API key configuration.";
+        } else if (status === window.google.maps.places.PlacesServiceStatus.INVALID_REQUEST) {
+          errorMsg = "Invalid request. Please try a different location.";
+        }
+        
+        setSearchMessage(errorMsg);
+      }
+    });
+  } catch (error) {
+    console.error("Error finding parks:", error);
+    setSearchMessage("An error occurred while searching for parks. Please try again later.");
+  }
+};
+  
+  
   const displayParks = (parks, centerLocation) => {
-    // Process parks
+    
     const processedParks = parks.map(park => {
       const parkLocation = {
         lat: park.geometry.location.lat(),
@@ -277,10 +300,10 @@ export default function ParkFinder() {
       };
     });
     
-    // Sort by distance
+   
     processedParks.sort((a, b) => a.distance - b.distance);
     
-    // Create markers
+   
     const newMarkers = [];
     processedParks.forEach(park => {
       const marker = createParkMarker(park);
@@ -289,15 +312,20 @@ export default function ParkFinder() {
     
     setParkMarkers(newMarkers);
     setParksList(processedParks);
+    
+    
+    setSearchMessage(`Found ${processedParks.length} parks nearby.`);
   };
   
-  // Create park marker
+  
   const createParkMarker = (park) => {
+    if (!window.google || !map) return null;
+    
     let parkMarker;
     
-    // Use AdvancedMarkerElement if available
-    if (window.google.maps.marker) {
-      // Create park element
+    
+    if (window.google.maps.marker && window.google.maps.marker.AdvancedMarkerElement) {
+      
       const element = document.createElement("div");
       element.innerHTML = `
         <div style="cursor: pointer; width: 32px; height: 32px;">
@@ -315,8 +343,19 @@ export default function ParkFinder() {
         title: park.name,
         content: element
       });
+      
+      
+      if (parkMarker.addListener) {
+        parkMarker.addListener("click", () => {
+        
+          map.panTo(park.location);
+          
+          
+          showParkInfo(park, parkMarker);
+        });
+      }
     } else {
-      // Fallback to regular marker
+      
       parkMarker = new window.google.maps.Marker({
         map: map,
         position: park.location,
@@ -326,23 +365,25 @@ export default function ParkFinder() {
           url: "https://maps.google.com/mapfiles/ms/icons/green-dot.png"
         }
       });
-    }
-    
-    // Add click event
-    parkMarker.addListener("click", () => {
-      // Pan to park
-      map.panTo(park.location);
       
-      // Show park info
-      showParkInfo(park, parkMarker);
-    });
+     
+      parkMarker.addListener("click", () => {
+       
+        map.panTo(park.location);
+        
+        
+        showParkInfo(park, parkMarker);
+      });
+    }
     
     return parkMarker;
   };
   
-  // Show park info
+  
   const showParkInfo = (park, marker) => {
-    // Create info window content
+    if (!window.google || !map) return;
+    
+  
     const content = `
       <div style="padding: 8px; max-width: 260px;">
         <h3 style="margin: 0 0 8px; color: #4CAF50;">${park.name}</h3>
@@ -353,24 +394,23 @@ export default function ParkFinder() {
       </div>
     `;
     
-    // Create and open info window
+    
     const infoWindow = new window.google.maps.InfoWindow({
       content: content
     });
     
-    // Close existing info window
+    
     if (currentInfoWindowRef.current) {
       currentInfoWindowRef.current.close();
     }
     
-    // Open new info window
+   
     infoWindow.open(map, marker);
     currentInfoWindowRef.current = infoWindow;
   };
   
-  // Calculate distance between coordinates
   const calculateDistance = (lat1, lon1, lat2, lon2) => {
-    const R = 6371; // Earth radius in km
+    const R = 6371; 
     const dLat = (lat2 - lat1) * Math.PI / 180;
     const dLon = (lon2 - lon1) * Math.PI / 180;
     const a = 
@@ -382,7 +422,7 @@ export default function ParkFinder() {
     return distance;
   };
   
-  // Handle radius change
+ 
   const handleRadiusChange = (e) => {
     if (userLocation) {
       clearParkMarkers();
@@ -390,17 +430,23 @@ export default function ParkFinder() {
     }
   };
   
-  // Click handler for park items
+
   const handleParkItemClick = (park, index) => {
-    // Center on park
+    if (!map || !parkMarkers[index] || !window.google) return;
+    
+ 
     map.setCenter(park.location);
     map.setZoom(16);
     
-    // Trigger marker click
-    window.google.maps.event.trigger(parkMarkers[index], "click");
+   
+    if (window.google.maps.event && parkMarkers[index]) {
+      window.google.maps.event.trigger(parkMarkers[index], "click");
+    } else {
+      showParkInfo(park, parkMarkers[index]);
+    }
   };
   
-  // Prevent form submission when pressing Enter in location input
+ 
   const handleLocationKeyDown = (e) => {
     if (e.key === 'Enter') {
       e.preventDefault();
@@ -444,9 +490,9 @@ export default function ParkFinder() {
           
           <div className="controls">
             <label htmlFor="radius-select">Search Radius:</label>
-            <select id="radius-select" onChange={handleRadiusChange}>
+            <select id="radius-select" defaultValue="1000" onChange={handleRadiusChange}>
               <option value="500">500 meters</option>
-              <option value="1000" selected>1 kilometer</option>
+              <option value="1000">1 kilometer</option>
               <option value="2000">2 kilometers</option>
               <option value="5000">5 kilometers</option>
               <option value="10000">10 kilometers</option>
