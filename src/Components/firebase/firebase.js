@@ -1,17 +1,16 @@
 import { initializeApp } from "firebase/app";
-import { getAuth } from "firebase/auth";  
+import { getAuth } from "firebase/auth";
 
 const firebaseConfig = {
-  apiKey: "AIzaSyCrP70yMAlrcT5Ssb8qUlQ7wLR0bks8jIA",
-  authDomain: "parkfinder-a4469.firebaseapp.com",
-  projectId: "parkfinder-a4469",
-  storageBucket: "parkfinder-a4469.firebasestorage.app",
-  messagingSenderId: "482129506256",
-  appId: "1:482129506256:web:051bb2cdf3655f0a97d3d5",
-  measurementId: "G-90S3NS326J"
+  apiKey: process.env.REACT_APP_FIREBASE_API_KEY,
+  authDomain: process.env.REACT_APP_FIREBASE_AUTH_DOMAIN,
+  projectId: process.env.REACT_APP_FIREBASE_PROJECT_ID,
+  storageBucket: process.env.REACT_APP_FIREBASE_STORAGE_BUCKET,
+  messagingSenderId: process.env.REACT_APP_FIREBASE_MESSAGING_SENDER_ID,
+  appId: process.env.REACT_APP_FIREBASE_APP_ID,
+  measurementId: process.env.REACT_APP_FIREBASE_MEASUREMENT_ID,
 };
 
-// Initialize Firebase
 const app = initializeApp(firebaseConfig);
 const auth = getAuth(app);
 
