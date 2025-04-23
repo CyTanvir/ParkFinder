@@ -33,7 +33,7 @@ const ContactUs = () => {
     }
   };
 
-  // Auto-hide success message after 4 seconds
+ 
   useEffect(() => {
     if (submitted) {
       const timer = setTimeout(() => setSubmitted(false), 4000);
