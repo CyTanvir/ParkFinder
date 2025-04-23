@@ -2,10 +2,10 @@ import React from 'react';
 import { Navigate } from 'react-router-dom';
 import { useAuth } from '../../../contexts/authContext/authContext';
 import './ProfileAcc.css';
-import teamImg from '../../Assets/team.png'
+import teamImg from '../../Assets/team.png';
 
 const ProfileAcc = () => {
-  const { currentUser, logout } = useAuth();
+  const { currentUser, signOut } = useAuth();
 
   if (!currentUser) {
     return <Navigate to="/" replace />;
@@ -13,11 +13,14 @@ const ProfileAcc = () => {
 
   const handleLogout = async () => {
     try {
-      await logout();
+      await signOut();
+      window.location.href = "/"; 
     } catch (error) {
       console.error("Failed to log out:", error);
+      alert("Logout failed. Try again.");
     }
   };
+  
 
   return (
     <div className="profile-page">
@@ -35,11 +38,10 @@ const ProfileAcc = () => {
               <span className="value">{currentUser.displayName || "Not Set"}</span>
             </div>
             <div className="profile-row">
-              <span className="label">Parks Visited:</span>
-              <span className="value">N/A</span>
+              <span className="label">Favorites:</span>
+              <span className="value">You haven't saved any yet.</span>
             </div>
           </div>
-
 
           <img
             src={teamImg}
@@ -48,13 +50,9 @@ const ProfileAcc = () => {
           />
         </div>
 
-        <div className="reviews-note">
-          <strong>Check Your Reviews</strong>
-          <span>Tap to view and edit reviews</span>
-        </div>
+
 
         <div className="profile-actions">
-          <button className="btn btn-green" onClick={() => alert("Change Password TBD")}>Change Password</button>
           <button className="btn btn-red" onClick={() => alert("Delete Account TBD")}>Delete My Account</button>
           <button className="btn btn-outline" onClick={handleLogout}>Log Out</button>
         </div>
