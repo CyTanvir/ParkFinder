@@ -8,6 +8,7 @@ import Nav from './Components/Nav/Navbar';
 import AboutUs from './Components/HomePage/About/AboutUs';
 import HotSpot from './Components/HomePage/HotS/HotSpot';
 import ProfileAcc from './Components/HomePage/Profile/ProfileAcc';
+import MostVisited from './Components/HomePage/MostV/MostVisited'
 import { AuthProvider } from './contexts/authContext/authContext';
 
 const App = () => {
@@ -23,6 +24,7 @@ const App = () => {
           <Route path="/about" element={<AboutUs />} />
           <Route path="/hotspot" element={<HotSpot />} />
           <Route path="/account" element={<ProfileAcc />} />
+          <Route path="/mostvisited" element={<MostVisited />} />
         </Routes>
       </Router>
     </AuthProvider>

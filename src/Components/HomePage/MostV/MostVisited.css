@@ -1,0 +1,117 @@
+body {
+    font-family: Arial, sans-serif;
+    margin: 0;
+    padding: 0;
+    background-color: #f4f4f4;
+  }
+  
+  #mid {
+    text-align: center;
+    margin-top: 60px;
+    padding: 20px;
+  }
+  
+  .mid-h1 {
+    font-size: 42px;
+    font-weight: bold;
+    color: #2e8b57;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    margin-top: 60px;
+    margin-bottom: 10px;
+  }
+  
+  .mid-a1 {
+    font-size: 18px;
+    color: #333;
+    max-width: 700px;
+    margin: 0 auto 30px auto;
+    line-height: 1.5;
+  }
+  
+  .zip-search {
+    margin: 20px;
+  }
+  
+  .zip-search input {
+    padding: 10px;
+    border-radius: 8px;
+    border: 1px solid #ccc;
+    width: 200px;
+    margin-right: 10px;
+  }
+  
+  .zip-search button {
+    padding: 10px 16px;
+    background-color: #2e8b57;
+    color: white;
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+  }
+  
+  .zip-search button:hover {
+    background-color: #276c48;
+  }
+  
+  .park-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 20px;
+    padding: 20px;
+    max-width: 1200px;
+    margin: 0 auto;
+  }
+  
+  
+  
+  .park-box {
+    background-color: white;
+    border-radius: 16px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    padding: 15px;
+    transition: transform 0.2s ease, box-shadow 0.2s ease, background-color 0.3s ease;
+    cursor: pointer;
+  }
+  
+  .park-box:hover {
+    transform: translateY(-5px);
+    background-color: #e6f4ea; 
+    box-shadow: 0 6px 12px rgba(0, 128, 0, 0.2);
+  }
+  
+  .park-box h3 {
+    margin: 12px 0 6px 0;
+    font-size: 20px;
+    color: #2e8b57;
+    transition: color 0.3s ease;
+  }
+  
+  .park-box:hover h3 {
+    color:#2e8b57;
+  }
+  
+  .park-box p {
+    margin: 4px 0;
+    font-size: 14px;
+    color: #555;
+  }
+  
+  
+  .park-box img {
+    width: 100%;
+    height: 180px;
+    object-fit: cover;
+    border-radius: 12px;
+  }
+  
+  .park-box h3 {
+    margin: 12px 0 6px 0;
+    font-size: 20px;
+    color: #7ea85d;
+  }
+  
+  .park-box p {
+    margin: 4px 0;
+    font-size: 14px;
+    color: #414d44;
+  }
