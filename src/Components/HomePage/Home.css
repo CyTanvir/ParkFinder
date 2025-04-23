@@ -62,19 +62,40 @@ body {
   margin: 0 auto;
 }
 
+
+
 .park-box {
   background-color: white;
   border-radius: 16px;
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
   padding: 15px;
-  transition: transform 0.2s ease, box-shadow 0.2s ease;
+  transition: transform 0.2s ease, box-shadow 0.2s ease, background-color 0.3s ease;
   cursor: pointer;
 }
 
 .park-box:hover {
   transform: translateY(-5px);
-  box-shadow: 0 6px 12px rgba(0, 0, 0, 0.15);
+  background-color: #e6f4ea; 
+  box-shadow: 0 6px 12px rgba(0, 128, 0, 0.2);
 }
+
+.park-box h3 {
+  margin: 12px 0 6px 0;
+  font-size: 20px;
+  color: #2e8b57;
+  transition: color 0.3s ease;
+}
+
+.park-box:hover h3 {
+  color:#2e8b57;
+}
+
+.park-box p {
+  margin: 4px 0;
+  font-size: 14px;
+  color: #555;
+}
+
 
 .park-box img {
   width: 100%;
@@ -86,11 +107,11 @@ body {
 .park-box h3 {
   margin: 12px 0 6px 0;
   font-size: 20px;
-  color: #333;
+  color: #7ea85d;
 }
 
 .park-box p {
   margin: 4px 0;
   font-size: 14px;
-  color: #555;
+  color: #414d44;
 }
