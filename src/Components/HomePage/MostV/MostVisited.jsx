@@ -4,36 +4,37 @@ import "./MostVisited.css";
 const MostVisited = () => {
   const [parks, setParks] = useState([]);
   const [zipcode, setZipcode] = useState("");
+  const [hasSearched, setHasSearched] = useState(false);
 
   const proxy = "https://corsproxy.io/?";
+  const radius = 80000; // ~50 miles
 
   const fetchParks = async (lat, lng) => {
-    const radius = 7000;
-    const url = `https://maps.googleapis.com/maps/api/place/nearbysearch/json?location=${lat},${lng}&radius=${radius}&type=park&key=${process.env.REACT_APP_GOOGLE_MAPS_API_KEY}`;
+    const url = `https://maps.googleapis.com/maps/api/place/nearbysearch/json?location=${lat},${lng}&radius=${radius}&type=park&keyword=park&key=${process.env.REACT_APP_GOOGLE_MAPS_API_KEY}`;
     const response = await fetch(`${proxy}${encodeURIComponent(url)}`);
     const data = await response.json();
-    console.log("Raw places result:", data.results);
 
-
-    const filteredParks = data.results.filter(place =>
-      (place.types && place.types.includes("park")) ||
-      (place.name && place.name.toLowerCase().includes("park"))
+    const filteredParks = data.results.filter(
+      (place) => place.types && place.types.includes("park")
     );
 
-    setParks(filteredParks.slice(0, 12));
+    const sortedParks = filteredParks
+      .filter((p) => p.user_ratings_total)
+      .sort((a, b) => b.user_ratings_total - a.user_ratings_total);
+
+    setParks(sortedParks.slice(0, 9));
   };
 
   const handleZipSearch = async () => {
-    if (!zipcode.trim()) return;
-    const geoUrl = `https://maps.googleapis.com/maps/api/geocode/json?address=${zipcode}&key=${process.env.REACT_APP_GOOGLE_MAPS_API_KEY}`;
-    const geoRes = await fetch(`${proxy}${encodeURIComponent(geoUrl)}`);
-    const geoData = await geoRes.json();
-
-    if (geoData.results.length > 0) {
+    setHasSearched(true);
+    try {
+      const geoUrl = `https://maps.googleapis.com/maps/api/geocode/json?address=${zipcode}&key=${process.env.REACT_APP_GOOGLE_MAPS_API_KEY}`;
+      const geoRes = await fetch(`${proxy}${encodeURIComponent(geoUrl)}`);
+      const geoData = await geoRes.json();
       const { lat, lng } = geoData.results[0].geometry.location;
       fetchParks(lat, lng);
-    } else {
-      setParks([]);
+    } catch (err) {
+      console.error("Failed to fetch geolocation:", err);
     }
   };
 
@@ -71,20 +72,18 @@ const MostVisited = () => {
                   alt={park.name}
                 />
               ) : (
-                <img
-                  src="/default-park.jpg"
-                  alt="No image available"
-                />
+                <img src="/default-park.jpg" alt="No image available" />
               )}
               <h3>{park.name}</h3>
               <p>{park.vicinity}</p>
-              {park.rating && <p>Rating: {park.rating}</p>}
+              {park.rating && <p>Rating: {park.rating} / 5</p>}
+              {park.user_ratings_total && (
+                <p>{park.user_ratings_total.toLocaleString()} ratings</p>
+              )}
             </div>
           ))
         ) : (
-          <p style={{ textAlign: "center", marginTop: "20px", color: "#444" }}>
-            No parks found. Try a different ZIP code.
-          </p>
+          hasSearched && <p>No parks found. Try another ZIP code.</p>
         )}
       </div>
     </div>
