@@ -24,6 +24,7 @@ const Home = () => {
         version: 'weekly',
         libraries: ['places']
       });
+  
 
       try {
         const google = await loader.load();
@@ -115,6 +116,32 @@ const Home = () => {
     map.setCenter(defaultLocation);
     findParksNearLocation(defaultLocation);
   };
+
+  const getUserCurrentLocation = () => {
+    if (!navigator.geolocation) {
+      setLocationError("Geolocation is not supported by your browser.");
+      return;
+    }
+  
+    navigator.geolocation.getCurrentPosition(
+      (position) => {
+        const location = {
+          lat: position.coords.latitude,
+          lng: position.coords.longitude
+        };
+        setUserLocation(location);
+        updateUserLocationMarker(location);
+        map.setCenter(location);
+        findParksNearLocation(location);
+        setLocationError('');
+      },
+      (error) => {
+        console.error("Geolocation error:", error);
+        setLocationError("Unable to retrieve your location. Please allow access.");
+      }
+    );
+  };
+  
 
   const updateUserLocationMarker = (location) => {
     userMarker?.setMap(null);
@@ -283,6 +310,7 @@ const Home = () => {
             />
             <button onClick={findParksFromUserInput}>Find Parks</button>
             <button onClick={useDefaultLocation}>Use Default Location</button>
+            <button onClick={getUserCurrentLocation}>Use My Current Location</button>
           </div>
 
           {locationError && (
