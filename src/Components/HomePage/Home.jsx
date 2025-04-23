@@ -109,7 +109,7 @@ const Home = () => {
   };
 
   const useDefaultLocation = () => {
-    const defaultLocation = { lat: 40.7128, lng: -74.0060 };
+    const defaultLocation = { lat: 42.3314, lng: -83.0458 }; // Detroit, MI
     setLocationError('');
     setUserLocation(defaultLocation);
     updateUserLocationMarker(defaultLocation);
