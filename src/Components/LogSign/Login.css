@@ -31,7 +31,7 @@
 .underline {
     width: 120px;
     height: 6px;
-    background: purple;
+    background: #4caf50;
     border-radius: 9px;
 }
 
@@ -78,7 +78,7 @@
     align-items: center;
     width: 480px;
     color: white;
-    background: rgb(46, 7, 97);
+    background: #2e8b57;
     border-radius: 20px;
     font-size: 20px;
     font-weight: 700;
