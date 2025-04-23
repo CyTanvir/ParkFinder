@@ -7,7 +7,7 @@ const MostVisited = () => {
   const [hasSearched, setHasSearched] = useState(false);
 
   const proxy = "https://corsproxy.io/?";
-  const radius = 80000; // ~50 miles
+  const radius = 9000; 
 
   const fetchParks = async (lat, lng) => {
     const url = `https://maps.googleapis.com/maps/api/place/nearbysearch/json?location=${lat},${lng}&radius=${radius}&type=park&keyword=park&key=${process.env.REACT_APP_GOOGLE_MAPS_API_KEY}`;
@@ -22,7 +22,7 @@ const MostVisited = () => {
       .filter((p) => p.user_ratings_total)
       .sort((a, b) => b.user_ratings_total - a.user_ratings_total);
 
-    setParks(sortedParks.slice(0, 9));
+    setParks(sortedParks.slice(0, 6));
   };
 
   const handleZipSearch = async () => {
