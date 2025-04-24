@@ -115,3 +115,22 @@ body {
     font-size: 14px;
     color: #414d44;
   }
+  .fav-star {
+    position: absolute;
+    top: 10px;
+    right: 12px;
+    font-size: 22px;
+    background: none;
+    border: none;
+    cursor: pointer;
+    transition: transform 0.2s ease;
+  }
+  
+  .fav-star:hover {
+    transform: scale(1.2);
+  }
+  
+  .park-box {
+    position: relative;
+  }
+  

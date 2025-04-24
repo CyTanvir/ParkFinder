@@ -1,13 +1,18 @@
 import React, { useState } from "react";
 import "./MostVisited.css";
+import { db } from "../../firebase/firebase";
+import { collection, addDoc, deleteDoc, doc, getDocs } from "firebase/firestore";
+import { useAuth } from "../../../contexts/authContext/authContext";
 
 const MostVisited = () => {
   const [parks, setParks] = useState([]);
   const [zipcode, setZipcode] = useState("");
   const [hasSearched, setHasSearched] = useState(false);
+  const [favoriteParkIds, setFavoriteParkIds] = useState([]);
 
+  const { currentUser } = useAuth();
   const proxy = "https://corsproxy.io/?";
-  const radius = 9000; 
+  const radius = 9000;
 
   const fetchParks = async (lat, lng) => {
     const url = `https://maps.googleapis.com/maps/api/place/nearbysearch/json?location=${lat},${lng}&radius=${radius}&type=park&keyword=park&key=${process.env.REACT_APP_GOOGLE_MAPS_API_KEY}`;
@@ -38,6 +43,51 @@ const MostVisited = () => {
     }
   };
 
+  const handleFavorite = async (park) => {
+    if (!currentUser) return alert("Please log in to save favorites.");
+
+    const parkId = park.place_id;
+    const userFavoritesRef = collection(db, "users", currentUser.uid, "favorites");
+
+    if (favoriteParkIds.includes(parkId)) {
+      // Unfavorite
+      try {
+        const snapshot = await fetchFavoritesSnapshot();
+        const parkDoc = snapshot.docs.find(doc => doc.data().place_id === parkId);
+        if (parkDoc) {
+          await deleteDoc(doc(db, "users", currentUser.uid, "favorites", parkDoc.id));
+          setFavoriteParkIds((prev) => prev.filter(id => id !== parkId));
+          alert("❌ Park removed from favorites.");
+        }
+      } catch (err) {
+        console.error("Error removing favorite:", err);
+        alert("Failed to unfavorite the park.");
+      }
+    } else {
+      // Add to favorites
+      try {
+        await addDoc(userFavoritesRef, {
+          name: park.name,
+          place_id: park.place_id,
+          photo: park.photos?.[0]?.photo_reference || null,
+          vicinity: park.vicinity,
+          rating: park.rating || null,
+          timestamp: Date.now()
+        });
+        setFavoriteParkIds((prev) => [...prev, park.place_id]);
+        alert("✅ Park added to favorites!");
+      } catch (err) {
+        console.error("Error saving favorite:", err);
+        alert("❌ Failed to save park.");
+      }
+    }
+  };
+
+  const fetchFavoritesSnapshot = async () => {
+    const favoritesRef = collection(db, "users", currentUser.uid, "favorites");
+    return await getDocs(favoritesRef);
+  };
+
   return (
     <div id="mid">
       <div className="mid-h1">Most Visited Parks</div>
@@ -66,6 +116,16 @@ const MostVisited = () => {
                 )
               }
             >
+              <button
+                className="fav-star"
+                onClick={(e) => {
+                  e.stopPropagation();
+                  handleFavorite(park);
+                }}
+              >
+                {favoriteParkIds.includes(park.place_id) ? "✅" : "⭐"}
+              </button>
+
               {park.photos && park.photos.length > 0 ? (
                 <img
                   src={`https://maps.googleapis.com/maps/api/place/photo?maxwidth=400&photoreference=${park.photos[0].photo_reference}&key=${process.env.REACT_APP_GOOGLE_MAPS_API_KEY}`}
