@@ -1,7 +1,13 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import "./MostVisited.css";
 import { db } from "../../firebase/firebase";
-import { collection, addDoc, deleteDoc, doc, getDocs } from "firebase/firestore";
+import {
+  collection,
+  addDoc,
+  deleteDoc,
+  doc,
+  getDocs
+} from "firebase/firestore";
 import { useAuth } from "../../../contexts/authContext/authContext";
 
 const MostVisited = () => {
@@ -13,6 +19,18 @@ const MostVisited = () => {
   const { currentUser } = useAuth();
   const proxy = "https://corsproxy.io/?";
   const radius = 9000;
+
+  useEffect(() => {
+    if (currentUser) {
+      loadUserFavorites();
+    }
+  }, [currentUser]);
+
+  const loadUserFavorites = async () => {
+    const snapshot = await getDocs(collection(db, "users", currentUser.uid, "favorites"));
+    const ids = snapshot.docs.map(doc => doc.data().place_id);
+    setFavoriteParkIds(ids);
+  };
 
   const fetchParks = async (lat, lng) => {
     const url = `https://maps.googleapis.com/maps/api/place/nearbysearch/json?location=${lat},${lng}&radius=${radius}&type=park&keyword=park&key=${process.env.REACT_APP_GOOGLE_MAPS_API_KEY}`;
@@ -50,9 +68,8 @@ const MostVisited = () => {
     const userFavoritesRef = collection(db, "users", currentUser.uid, "favorites");
 
     if (favoriteParkIds.includes(parkId)) {
-      // Unfavorite
       try {
-        const snapshot = await fetchFavoritesSnapshot();
+        const snapshot = await getDocs(userFavoritesRef);
         const parkDoc = snapshot.docs.find(doc => doc.data().place_id === parkId);
         if (parkDoc) {
           await deleteDoc(doc(db, "users", currentUser.uid, "favorites", parkDoc.id));
@@ -64,28 +81,26 @@ const MostVisited = () => {
         alert("Failed to unfavorite the park.");
       }
     } else {
-      // Add to favorites
       try {
-        await addDoc(userFavoritesRef, {
-          name: park.name,
-          place_id: park.place_id,
-          photo: park.photos?.[0]?.photo_reference || null,
-          vicinity: park.vicinity,
-          rating: park.rating || null,
-          timestamp: Date.now()
-        });
-        setFavoriteParkIds((prev) => [...prev, park.place_id]);
-        alert("✅ Park added to favorites!");
+        const existing = await getDocs(userFavoritesRef);
+        const alreadyExists = existing.docs.some(doc => doc.data().place_id === parkId);
+        if (!alreadyExists) {
+          await addDoc(userFavoritesRef, {
+            name: park.name,
+            place_id: park.place_id,
+            photo: park.photos?.[0]?.photo_reference || null,
+            vicinity: park.vicinity,
+            rating: park.rating || null,
+            timestamp: Date.now()
+          });
+          setFavoriteParkIds((prev) => [...prev, parkId]);
+          alert("✅ Park added to favorites!");
+        }
       } catch (err) {
         console.error("Error saving favorite:", err);
         alert("❌ Failed to save park.");
       }
     }
-  };
-
-  const fetchFavoritesSnapshot = async () => {
-    const favoritesRef = collection(db, "users", currentUser.uid, "favorites");
-    return await getDocs(favoritesRef);
   };
 
   return (
