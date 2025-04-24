@@ -10,6 +10,8 @@ import {
 } from "firebase/firestore";
 import { useAuth } from "../../../contexts/authContext/authContext";
 
+
+
 const MostVisited = () => {
   const [parks, setParks] = useState([]);
   const [zipcode, setZipcode] = useState("");
@@ -21,11 +23,13 @@ const MostVisited = () => {
   const radius = 8500;
 
   useEffect(() => {
-    if (currentUser) {
-      loadUserFavorites();
-    }
-  }, [currentUser]);
-
+    const savedZip = localStorage.getItem("zipcode");
+    const savedParks = localStorage.getItem("parks");
+  
+    if (savedZip) setZipcode(savedZip);
+    if (savedParks) setParks(JSON.parse(savedParks));
+  }, []);
+  
   const loadUserFavorites = async () => {
     const snapshot = await getDocs(collection(db, "users", currentUser.uid, "favorites"));
     const ids = snapshot.docs.map(doc => doc.data().place_id);
@@ -61,12 +65,23 @@ const MostVisited = () => {
     }
   };
 
-  const handleFavorite = async (park) => {
-    if (!currentUser) return alert("Please log in to save favorites.");
+  useEffect(() => {
+    if (zipcode) localStorage.setItem("zipcode", zipcode);
+  }, [zipcode]);
+  
+  useEffect(() => {
+    if (parks.length > 0) {
+      localStorage.setItem("parks", JSON.stringify(parks));
+    }
+  }, [parks]);
+  
 
+  const handleFavorite = async (park) => {
+    if (!currentUser) return;
+  
     const parkId = park.place_id;
     const userFavoritesRef = collection(db, "users", currentUser.uid, "favorites");
-
+  
     if (favoriteParkIds.includes(parkId)) {
       try {
         const snapshot = await getDocs(userFavoritesRef);
@@ -74,11 +89,9 @@ const MostVisited = () => {
         if (parkDoc) {
           await deleteDoc(doc(db, "users", currentUser.uid, "favorites", parkDoc.id));
           setFavoriteParkIds((prev) => prev.filter(id => id !== parkId));
-          alert("❌ Park removed from favorites.");
         }
       } catch (err) {
         console.error("Error removing favorite:", err);
-        alert("Failed to unfavorite the park.");
       }
     } else {
       try {
@@ -94,15 +107,13 @@ const MostVisited = () => {
             timestamp: Date.now()
           });
           setFavoriteParkIds((prev) => [...prev, parkId]);
-          alert("✅ Park added to favorites!");
         }
       } catch (err) {
         console.error("Error saving favorite:", err);
-        alert("❌ Failed to save park.");
       }
     }
   };
-
+  
   return (
     <div id="mid">
       <div className="mid-h1">Most Visited Parks</div>
