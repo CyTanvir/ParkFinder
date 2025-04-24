@@ -18,7 +18,7 @@ const MostVisited = () => {
 
   const { currentUser } = useAuth();
   const proxy = "https://corsproxy.io/?";
-  const radius = 9000;
+  const radius = 8500;
 
   useEffect(() => {
     if (currentUser) {
