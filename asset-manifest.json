@@ -1,0 +1,18 @@
+{
+  "files": {
+    "main.css": "/ParkFinder/static/css/main.c785048d.css",
+    "main.js": "/ParkFinder/static/js/main.91d9c6c0.js",
+    "static/js/453.8be8f45c.chunk.js": "/ParkFinder/static/js/453.8be8f45c.chunk.js",
+    "static/media/missionPic1.jpg": "/ParkFinder/static/media/missionPic1.1f4c1889a6fa2480d65e.jpg",
+    "static/media/whyusPic1.jpg": "/ParkFinder/static/media/whyusPic1.5749a5d01130064b6a3c.jpg",
+    "static/media/visionPic1.jpg": "/ParkFinder/static/media/visionPic1.624400b43dc0d3689c3d.jpg",
+    "index.html": "/ParkFinder/index.html",
+    "main.c785048d.css.map": "/ParkFinder/static/css/main.c785048d.css.map",
+    "main.91d9c6c0.js.map": "/ParkFinder/static/js/main.91d9c6c0.js.map",
+    "453.8be8f45c.chunk.js.map": "/ParkFinder/static/js/453.8be8f45c.chunk.js.map"
+  },
+  "entrypoints": [
+    "static/css/main.c785048d.css",
+    "static/js/main.91d9c6c0.js"
+  ]
+}
