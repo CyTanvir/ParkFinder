@@ -6,7 +6,6 @@ import teamImg from '../../Assets/team.png';
 import { db } from '../../firebase/firebase';
 import { collection, getDocs, deleteDoc, doc } from 'firebase/firestore';
 
-
 const ProfileAcc = () => {
   const { currentUser, signOut } = useAuth();
   const [favorites, setFavorites] = useState([]);
@@ -50,7 +49,10 @@ const ProfileAcc = () => {
       alert("❌ Failed to remove favorite.");
     }
   };
-  
+
+  if (!currentUser) {
+    return <Navigate to="/" replace />;
+  }
 
   return (
     <div className="profile-page">
@@ -61,11 +63,11 @@ const ProfileAcc = () => {
           <div className="profile-info">
             <div className="profile-row">
               <span className="label">Email:</span>
-              <span className="value">{currentUser.email}</span>
+              <span className="value">{currentUser?.email || "Not Available"}</span>
             </div>
             <div className="profile-row">
               <span className="label">Name:</span>
-              <span className="value">{currentUser.displayName || "Not Set"}</span>
+              <span className="value">{currentUser?.displayName || "Not Set"}</span>
             </div>
             <div className="profile-row">
               <span className="label">Favorites:</span>
@@ -80,32 +82,31 @@ const ProfileAcc = () => {
           <div className="favorites-list">
             <h3>Favorited Parks</h3>
             <ul className="favorites-ul">
-  {favorites.map((fav) => (
-    <li key={fav.id} className="favorite-item">
-      <button
-        className="remove-btn"
-        onClick={() => handleRemoveFavorite(fav.id)}
-        title="Remove from favorites"
-      >
-        ❌
-      </button>
-      {fav.photo ? (
-        <img
-          src={`https://maps.googleapis.com/maps/api/place/photo?maxwidth=100&photoreference=${fav.photo}&key=${process.env.REACT_APP_GOOGLE_MAPS_API_KEY}`}
-          alt={fav.name}
-        />
-      ) : (
-        <img src="/default-park.jpg" alt="Default park" />
-      )}
-      <div>
-        <strong>{fav.name}</strong>
-        <p>{fav.vicinity}</p>
-        {fav.rating && <p>Rating: {fav.rating}/5</p>}
-      </div>
-    </li>
-  ))}
-</ul>
-
+              {favorites.map((fav) => (
+                <li key={fav.id} className="favorite-item">
+                  <button
+                    className="remove-btn"
+                    onClick={() => handleRemoveFavorite(fav.id)}
+                    title="Remove from favorites"
+                  >
+                    ❌
+                  </button>
+                  {fav.photo ? (
+                    <img
+                      src={`https://maps.googleapis.com/maps/api/place/photo?maxwidth=100&photoreference=${fav.photo}&key=${process.env.REACT_APP_GOOGLE_MAPS_API_KEY}`}
+                      alt={fav.name}
+                    />
+                  ) : (
+                    <img src="/default-park.jpg" alt="Default park" />
+                  )}
+                  <div>
+                    <strong>{fav.name}</strong>
+                    <p>{fav.vicinity}</p>
+                    {fav.rating && <p>Rating: {fav.rating}/5</p>}
+                  </div>
+                </li>
+              ))}
+            </ul>
           </div>
         )}
 
