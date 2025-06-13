@@ -10,13 +10,13 @@
   align-items: center;
   min-height: 100vh;
   background: linear-gradient(135deg, #e7f5e1, #d6f5ff);
-  padding: 2rem;
+  padding: 1rem;
   font-family: 'Poppins', sans-serif;
 }
 
 .contact-container {
   background: #ffffff;
-  padding: 2rem 2.5rem;
+  padding: 2rem 2rem;
   border-radius: 16px;
   box-shadow: 0 8px 20px rgba(0, 0, 0, 0.1);
   width: 100%;
@@ -24,6 +24,7 @@
   animation: fadeInUp 0.6s ease forwards;
   transform: translateY(20px);
   opacity: 0;
+  margin-top: 4rem; 
 }
 
 @keyframes fadeInUp {
